@@ -10,6 +10,7 @@ class Reader(db.Model):
     town = db.Column(db.String(80), unique=False, nullable=True)
     book_order = db.Column(db.List, nullable=True)
     image = db.Column(db.LargeBinary)
+    hash = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Reader {} {} {} {}>'.format(
