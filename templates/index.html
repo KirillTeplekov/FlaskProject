@@ -14,7 +14,7 @@
       <div class="container">
         <!-- Example row of columns -->
         <div class="row">
-          {% for book in Book.query.all()[:6]}
+          {% for book in new_book %}
               <div class="col-md-4">
                 <h5>book.name</h5>
                 <p>book.discription</p>
