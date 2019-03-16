@@ -11,32 +11,62 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+# Main page
 @app.route('/')
 @app.route('/index')
 def index():
-    pass
+    # Create list with last 5 books
+    new_books = Book.query.all()[-6:]
+    # Authorization check
+    if 'username' in session:
+        # If user authorized show user's name and image
+        username = session['username']
+        image = Reader.filter_by(name=username).first().image
+        return render_template('index.html', title='Библиотека', username=username,
+                               image=image, new_book=new_books)
+    else:
+        return render_template('index.html', title='Библиотека', new_books=new_books)
 
 
-@app.route('/login')
+# Sign-in page
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user_name = form.username.data
-        hash = generate_password_hash(form.password.data)
-        user_model = Reader()
-        exists = user_model.exists(user_name, hash)
-        if exists[0]:
-            session['username'] = user_name
-            session['user_id'] = exists[1]
-            return redirect('/index')
-        else:
-            return redirect('/login')
-    return render_template('login.html', title='Авторизация', form=form)
+    if 'username' in session:
+        return redirect('/index')
+    else:
+        form = LoginForm()
+        if form.validate_on_submit():
+            username = form.username.data
+            hash = generate_password_hash(form.password.data)
+            user_model = Reader()
+            exists = user_model.exists(username, hash)
+            if exists[0]:
+                session['username'] = username
+                session['user_id'] = exists[1]
+                return redirect('/index')
+            else:
+                return redirect('/login')
+        return render_template('login.html', title='Авторизация', form=form)
 
 
-@app.route('/registration')
+# Registration page
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
-    pass
+    form = RegistrationForm()
+    if form.image.data:
+        # load custom image
+        image = form.image.data
+    else:
+        # Load default image
+        pass
+    if form.validate_on_submit():
+        # Create new user
+        new_user = Reader(username=form.username.data, name=form.name.data,
+                          surname=form.surname.data, email=form.email.data,
+                          town=form.town.data, image=image,
+                          hash=generate_password_hash(form.password.data))
+        db.session.add(new_user)
+        db.session.commit()
 
 
 @app.route('/logout')
@@ -46,14 +76,33 @@ def logout():
     return redirect('/login')
 
 
+# Order of all book in library
 @app.route('/book_order')
 def book_order():
-    pass
+    books = Book.query.all()
+    # Authorization check
+    if 'username' in session:
+        # If user authorized show user's name and image
+        username = session['username']
+        image = Reader.filter_by(name=username).first().image
+        return render_template('book_order.html', title='Список книг', username=username,
+                               image=image, books=books)
+    else:
+        return render_template('book_order.html', title='Список книг', books=books)
 
 
+# User's page
 @app.route('/<username>')
-def user_page(username):
-    pass
+def user_page(username_page):
+    # Authorization check
+    if 'username' in session:
+        # If user authorized show user's name and image
+        username = session['username']
+        image = Reader.filter_by(name=username).first().image
+        return render_template('user_page.html', title=username_page, username=username,
+                               image=image)
+    else:
+        return render_template('user_page.html', title=username_page)
 
 
 if __name__ == '__main__':
