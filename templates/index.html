@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3" align="left">Наша библиотека</h1>
+          <p align="left">Приветствуем вас на сайте нашей библиотеке.</p>
+          <p align="left">Здесь вы можете забронировать книгу, не выходя из дома,</p>
+          <p align="left">а также оставить отзыв</p>
+          <img alt="Изображение отсутствует" src=static\library_photo.png>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          {% for book in new_books %}
+              <div class="col-md-4">
+                <h5>book.name</h5>
+                <p>book.discription</p>
+                <p><a class="btn btn-secondary" href="#" role="button">Узнать больше »</a></p>
+              </div>
+          {% endfor %}
+        </div>
+      </div> <!-- /container -->
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="container">
+            <img src={{image}} class="rounded float-left">
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile02">
+                <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+              </div>
+            </div>
+        </div>
+        <h3>{{username}}</h3>
+        <h4>{{name}}, {{surname}}</h4>
+    </div>
+    <p><a class="btn btn-secondary" href="#" role="button">Изменить информацию »</a></p>
+{% endblock %}
