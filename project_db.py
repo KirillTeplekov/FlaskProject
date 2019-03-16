@@ -9,7 +9,7 @@ class Reader(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     town = db.Column(db.String(80), unique=False, nullable=True)
     book_order = db.Column(db.List, nullable=True)
-    image = db.Column(db.LargeBinary)
+    image = db.Column(db.LargeBinary, nullable=True)
     hash = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
@@ -23,8 +23,14 @@ class Book(db.Model):
     author = db.Column(db.String(80), unique=False, nullable=False)
     count_all_books = db.Column(db.Integer, nullable=False)
     count_book_in_lib = db.Column(db.Integer, nullable=False)
-    icon = db.Column(db.LargeBinary)
-    discription = db.Column(db.String(500), unique=False, nullable=False)
+    icon = db.Column(db.LargeBinary, nullable=True)
+    description = db.Column(db.String(500), unique=False, nullable=False)
+    review_id = db.Column(db.Integer,
+                          db.ForeignKey('review.id'),
+                          nullable=False)
+    review = db.relationship('Review',
+                             backref=db.backref('Books',
+                                                lazy=True))
 
     def __repr__(self):
         return '<Book {} {} {} {}>'.format(
