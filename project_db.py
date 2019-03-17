@@ -8,9 +8,9 @@ class Reader(db.Model):
     surname = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     town = db.Column(db.String(80), unique=False, nullable=True)
-    book_order = db.Column(db.PickleType, nullable=True)
-    image = db.Column(db.LargeBinary, nullable=False)
+    image = db.Column(db.String(150), nullable=False)
     hash = db.Column(db.String(120), unique=True, nullable=False)
+    admin = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
         return '<Reader {} {} {} {}>'.format(
@@ -23,7 +23,7 @@ class Book(db.Model):
     author = db.Column(db.String(80), unique=False, nullable=False)
     count_all_books = db.Column(db.Integer, nullable=False)
     count_book_in_lib = db.Column(db.Integer, nullable=False)
-    icon = db.Column(db.LargeBinary, nullable=True)
+    icon = db.Column(db.String(150), nullable=True)
     description = db.Column(db.String(500), unique=False, nullable=False)
 
     def __repr__(self):
