@@ -1,9 +1,9 @@
 from flask import Flask, render_template, redirect, session
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash
 from flask_restful import reqparse, abort, Api, Resource
-from base64 import b64encode
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, AddBook
+from werkzeug.utils import secure_filename
+import os
 from project_db import *
 
 app = Flask(__name__)
@@ -12,7 +12,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 api = Api(app)
-
+UPLOAD_FOLDER = '/static/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Main page
 @app.route('/')
@@ -22,7 +23,6 @@ def index():
     new_books = Book.query.all()[-6:]
     # Authorization check
     if 'username' in session:
-        print('ok2')
         # If user authorized show user's name and image
         username = session['username']
         image = session['image']
@@ -45,7 +45,8 @@ def login():
             if exists:
                 session['username'] = username
                 session['user_id'] = exists.id
-                session['image'] = b64encode(exists.image)
+                session['image'] = exists.image
+                session['admin'] = exists.admin
                 return redirect('/index')
             else:
                 return redirect('/login')
@@ -57,17 +58,22 @@ def login():
 def registration():
     if 'username' in session:
         pass
-        # session.pop('username', 0)
-        # session.pop('user_id', 0)
+        session.pop('username', 0)
+        session.pop('user_id', 0)
     form = RegistrationForm()
 
     if form.validate_on_submit():
         user = Reader.query.filter_by(username=form.username.data).first()
         if not user:
+            if form.image:
+                image = form.image.data.read()
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], form.username.data))
+            else:
+                image = 'static/user.png'
             # Create new user
             new_user = Reader(username=form.username.data, name=form.name.data,
                               surname=form.surname.data, email=form.email.data,
-                              town=form.town.data, image=form.image.data.read(),
+                              town=form.town.data, image=image,
                               hash=form.password.data)
             db.session.add(new_user)
             db.session.commit()
@@ -83,6 +89,42 @@ def logout():
     session.pop('username', 0)
     session.pop('user_id', 0)
     return redirect('/login')
+
+
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if not session['admin']:
+        return redirect('/index')
+    form = AddBook()
+    if form.validate_on_submit():
+        book = Book.query.filter_by(name=form.name.data).first()
+        if not book:
+            my_file = secure_filename(form.icon.data.file.filename)
+            my_file.save(os.path.join(app.config['UPLOAD_FOLDER'], form.name.data))
+            icon.save(os.path.join(app.config['UPLOAD_FOLDER'], form.name.data))
+            new_book = Book(name=form.name.data, author=form.author.data,
+                            count_all_books=form.count_all_books.data,
+                            count_book_in_lib=form.count_all_books.data, icon=icon,
+                            description=form.description.data)
+            new_book_primary = PrimaryBook()
+            new_book.PrimaryBooks.append(new_book_primary)
+            db.session.add(new_book)
+            db.session.commit()
+            return redirect('/success')
+    username = session['username']
+    image = session['image']
+    return render_template('add_book.html', title='Добавить книгу', form=form, username=username, image=image)
+
+
+@app.route('/success')
+def success():
+    if 'username' in session:
+        # If user authorized show user's name and image
+        username = session['username']
+        image = session['image']
+        return render_template('success.html', title='Успех', username=username,
+                               image=image)
+    return render_template('success.html', title='Успех')
 
 
 # Order of all book in library
