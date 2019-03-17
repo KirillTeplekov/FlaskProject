@@ -9,7 +9,7 @@ class Reader(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     town = db.Column(db.String(80), unique=False, nullable=True)
     book_order = db.Column(db.PickleType, nullable=True)
-    image = db.Column(db.LargeBinary, nullable=True)
+    image = db.Column(db.LargeBinary, nullable=False)
     hash = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
@@ -31,6 +31,25 @@ class Book(db.Model):
             self.id, self.name, self.author, self.count_book_in_lib)
 
 
+class PrimaryBook(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('book.id'),
+                        nullable=False)
+    book = db.relationship('Book',
+                           backref=db.backref('PrimaryBooks',
+                                              lazy=True))
+    reader_id = db.Column(db.Integer,
+                          db.ForeignKey('reader.id'),
+                          nullable=True)
+    reader = db.relationship('Reader',
+                             backref=db.backref('PrimaryBooks',
+                                                lazy=True))
+
+    def __repr__(self):
+        return '<PrimaryBooks {}>'.format(self.id)
+
+
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     header = db.Column(db.String(80), unique=False, nullable=False)
@@ -41,6 +60,12 @@ class Review(db.Model):
     reader = db.relationship('Reader',
                              backref=db.backref('Reviews',
                                                 lazy=True))
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('book.id'),
+                        nullable=False)
+    book = db.relationship('Book',
+                           backref=db.backref('Reviews',
+                                              lazy=True))
 
     def __repr__(self):
         return '<Review {} {} {} {}>'.format(
