@@ -29,7 +29,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <img src={{ image }}>
+                      <img src="data:;base64,{{ image }}">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="#">{{ username }}</a>
@@ -40,7 +40,10 @@
             </ul>
         {% else %}
           <ul class="nav justify-content-end mr-auto">
-              <a href="/login" class="btn btn-primary stretched-link">Зарегистрироваться</a>
+              <div>
+                  <a href="/registration" class="btn btn-outline-primary stretched-link">Зарегистрироваться</a>
+                  <a href="/login" class="btn btn-primary stretched-link">Войти</a>
+              </div>
           </ul>
         {% endif %}
       </nav>

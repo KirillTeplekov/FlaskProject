@@ -3,8 +3,8 @@
 {% block content %}
     <div class="container">
         <div class="container">
-            <img src={{ user.image }} class="rounded float-left">
-            {{% if "username" in session and session["username"] == username_page %}}
+            <img src="data:;base64,{{ image }}" class="rounded float-left">
+            {{% if "username" in session and session["username"] == user.name %}}
                 <div class="input-group mb-3">
                   <div class="custom-file">
                     <input type="file" class="custom-file-input" id="inputGroupFile02">

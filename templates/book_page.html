@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <img src={{image}} class="rounded float-left">
+    <img src="data:;base64,{{ image }}" class="rounded float-left">
     <div class="container">
         <h3>{{ book.name }}</h3>
         <h4>{{ book.author }}</h4>

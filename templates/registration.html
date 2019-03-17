@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="alert alert-light" role="alert" align="middle">
+    <div align="center">
         <h1>Регистрация</h1>
         <form action="" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
@@ -33,9 +33,22 @@
                 {% endfor %}
             </p>
             <p>
+                {{ form.email.label }}<br>
+                {{ form.email }}<br>
+                {% for error in form.email.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.town.label }}<br>
+                {{ form.town }}<br>
+            </p>
+            <p align="center">
                 {{ form.image.label }}<br>
                 {{ form.image(class_='button') }}<br>
-                            {% for error in form.image.errors %}
+                {% for error in form.image.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
@@ -52,6 +65,5 @@
             </p>
             <p>{{ form.submit(class_='button') }}</p>
         </form>
-        <a href="/login">Авторизация</a>
     </div>
 {% endblock %}
