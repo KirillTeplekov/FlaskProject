@@ -8,7 +8,7 @@ class Reader(db.Model):
     surname = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     town = db.Column(db.String(80), unique=False, nullable=True)
-    book_order = db.Column(db.List, nullable=True)
+    book_order = db.Column(db.PickleType, nullable=True)
     image = db.Column(db.LargeBinary, nullable=True)
     hash = db.Column(db.String(120), unique=True, nullable=False)
 
@@ -25,12 +25,6 @@ class Book(db.Model):
     count_book_in_lib = db.Column(db.Integer, nullable=False)
     icon = db.Column(db.LargeBinary, nullable=True)
     description = db.Column(db.String(500), unique=False, nullable=False)
-    review_id = db.Column(db.Integer,
-                          db.ForeignKey('review.id'),
-                          nullable=False)
-    review = db.relationship('Review',
-                             backref=db.backref('Books',
-                                                lazy=True))
 
     def __repr__(self):
         return '<Book {} {} {} {}>'.format(
