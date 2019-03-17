@@ -12,31 +12,35 @@
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#EBC677;">
       	<div class="navbar-header">
             <a class="navbar-brand" href="/index">
-              <img alt="Brand" src="static\lib.png">
+              <img alt="Brand" src=static/lib.png>
               Библиотека
             </a>
           </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/books">Книги</a>
+                <a class="nav-item nav-link" href="/book_order">Книги</a>
             </div>
+            {% if session['admin'] %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/add_book">Добавить книгу</a>
+                </div>
+            {% endif %}
         </div>
         {% if "username" in session %}
             <ul class="nav justify-content-end mr-auto">
                 <li class="navbar-brand" href="#">
-                    {{ username }}
+                    <img src={{ image }}>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <img src="data:;base64,{{ image }}">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">{{ username }}</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="/logout">Выйти</a>
-                    </div>
-                  </li>
+                <div class="dropdown">
+                  <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ username }}
+                  </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/users/{{ username }}">{{ username }}</a>
+                        <a class="dropdown-item" href="/logout">Выйти</a>
+                      </div>
+                </div>
             </ul>
         {% else %}
           <ul class="nav justify-content-end mr-auto">

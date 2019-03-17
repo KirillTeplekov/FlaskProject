@@ -2,18 +2,9 @@
 
 {% block content %}
     <div align="center">
-        <h1>Регистрация</h1>
+        <h1>Добавить книгу</h1>
         <form action="" method="post" novalidate enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username }}<br>
-                {% for error in form.username.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                {% endfor %}
-            </p>
             <p>
                 {{ form.name.label }}<br>
                 {{ form.name }}<br>
@@ -24,46 +15,42 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.surname.label }}<br>
-                {{ form.surname }}<br>
-                {% for error in form.surname.errors %}
+                {{ form.author.label }}<br>
+                {{ form.author }}<br>
+                {% for error in form.author.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
                 {% endfor %}
             </p>
             <p>
-                {{ form.email.label }}<br>
-                {{ form.email }}<br>
-                {% for error in form.email.errors %}
+                {{ form.count_all_books.label }}<br>
+                {{ form.count_all_books }}<br>
+                {% for error in form.count_all_books.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
                 {% endfor %}
-            </p>
-            <p>
-                {{ form.town.label }}<br>
-                {{ form.town }}<br>
             </p>
             <p align="center">
-                {{ form.image.label }}<br>
-                {{ form.image(class_='button') }}<br>
-                {% for error in form.image.errors %}
+                {{ form.icon.label }}<br>
+                {{ form.icon(class_='button') }}<br>
+                {% for error in form.icon.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
                 {% endfor %}
             </p>
             <p>
-                {{ form.password.label }}<br>
-                {{ form.password }}<br>
-                {% for error in form.password.errors %}
+                {{ form.description.label }}<br>
+                {{ form.description }}<br>
+                {% for error in form.description.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
                 {% endfor %}
             </p>
-            <p>{{ form.submit(class_='button') }}</p>
+            <p>{{ form.submit() }}</p>
         </form>
     </div>
 {% endblock %}
