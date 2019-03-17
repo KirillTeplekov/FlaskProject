@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-3" align="left">Наша библиотека</h1>
-          <p align="left">Приветствуем вас на сайте нашей библиотеке.</p>
-          <p align="left">Здесь вы можете забронировать книгу, не выходя из дома,</p>
-          <p align="left">а также оставить отзыв</p>
-          <img alt="Изображение отсутствует" src=static\library_photo.png>
+          <h5 class="display-4" align="left">Наша библиотека</h5>
+          <p align="left">Приветствуем вас на сайте нашей библиотеке. Здесь вы можете забронировать книгу, не выходя из дома, а также оставить отзыв</p>
+          <img alt="Изображение отсутствует" src=static\library_photo.png class="rounded mx-auto d-block">
         </div>
       </div>
 
@@ -16,8 +14,8 @@
         <div class="row">
           {% for book in new_books %}
               <div class="col-md-4">
-                <h5>book.name</h5>
-                <p>book.description</p>
+                <h5>{{ book.name }}</h5>
+                <p>{{ book.description }}</p>
                 <p><a class="btn btn-secondary" href="#" role="button">Узнать больше »</a></p>
               </div>
           {% endfor %}

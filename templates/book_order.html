@@ -3,12 +3,12 @@
 {% block content %}
   <h3 align="center">Список книг в библиотеке</h3>
   <ul class="list-unstyled">
-    {% for book in Book.query.all()}
+    {% for book in books}
       <li class="media">
         <img src=book.icon class="mr-3" alt="Изображение отсутствует">
         <div class="media-body">
-          <h5 class="mt-0 mb-1">book.name, book.author</h5>
-          book.description
+          <h5 class="mt-0 mb-1">{{ book.name, book.author }}</h5>
+          {{ book.description }}
         </div>
       </li>
     {% endfor %}
