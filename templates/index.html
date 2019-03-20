@@ -5,7 +5,7 @@
         <div class="container">
           <h5 class="display-4" align="left">Наша библиотека</h5>
           <p align="left">Приветствуем вас на сайте нашей библиотеке. Здесь вы можете забронировать книгу, не выходя из дома, а также оставить отзыв.</p>
-          <img alt="Изображение отсутствует" src=static\lib_photo.png class="rounded mx-auto d-block">
+          <img alt="Изображение отсутствует" src={{ image }} class="rounded mx-auto d-block">
         </div>
       </div>
 
@@ -16,7 +16,7 @@
               <div class="col-md-4">
                 <h5>{{ book.name }}</h5>
                 <p>{{ book.description }}</p>
-                <p><a class="btn btn-secondary" href="#" role="button">Узнать больше »</a></p>
+                <a class="btn btn-warning" href="/books/{{ book.name }}" role="button">Узнать больше »</a>
               </div>
           {% endfor %}
         </div>

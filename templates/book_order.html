@@ -5,12 +5,16 @@
   <ul class="list-unstyled">
     {% for book in books %}
       <li class="media">
-        <img src=book.icon class="mr-3" alt="Изображение отсутствует">
+        <img src="{{ book.icon }}" class="mr-3" alt="Изображение отсутствует">
         <div class="media-body">
-          <h5 class="mt-0 mb-1">{{ book.name, book.author }}</h5>
-          {{ book.description }}
+          <a class="mt-0 mb-1" href="/books/{{ book.name }}">{{ book.name }} {{ book.author }}</a>
+            <p>{{ book.description }}</p>
+          {% if session['username'] %}
+            <a href="/books/{{ book.id }}/{{ session['user_id'] }}" class="btn btn-warning">Заказать</a>
+          {% endif %}
         </div>
       </li>
+      <p></p>
     {% endfor %}
   </ul>
 {% endblock %}

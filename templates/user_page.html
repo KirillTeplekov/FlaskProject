@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container">
         <div class="container">
-            <img src={{ user.image }} class="rounded float-left">
+            <img src={{ user.image }} class="mr-3">
             {% if "username" in session and session["username"] == user.name %}
                 <div class="input-group mb-3">
                   <div class="custom-file">
@@ -16,8 +16,23 @@
                 </div>
             {% endif %}
         </div>
-        <h3>{{ user.name }</h3>
-        <h4>{{ user.name, user.name }}</h4>
+        <div align="center">
+            <h3>{{ user.username }}</h3>
+            <h4>{{ user.name }} {{ user.surname }}</h4>
+        </div>
     </div>
-    <p><a class="btn btn-secondary" href="#" role="button">Изменить информацию »</a></p>
+    <h4 align="center">Список книг</h4>
+    {% for book in book_order %}
+      <li class="media">
+        <img src="{{ book.icon }}" class="mr-3" alt="Изображение отсутствует">
+        <div class="media-body">
+          <a class="mt-0 mb-1" href="/books/{{ book.name }}">{{ book.name }} {{ book.author }}</a>
+            <p>{{ book.description }}</p>
+          {% if session['username'] %}
+            <a href="/users/{{ session['user_id'] }}/{{ book.id }}" class="btn btn-warning">Вернуть</a>
+          {% endif %}
+        </div>
+      </li>
+      <p></p>
+    {% endfor %}
 {% endblock %}

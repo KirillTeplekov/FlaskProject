@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <img src="data:;base64,{{ image }}" class="rounded float-left">
     <div class="container">
-        <h3>{{ book.name }}</h3>
-        <h4>{{ book.author }}</h4>
-        <p>{{ book.description }}</p>
+        <img src="{{ book.icon }}" class="rounded float-left">
+        <div class="container">
+            <h3 align="center">{{ book.name }}</h3>
+            <h4 align="center">{{ book.author }}</h4>
+            <p>{{ book.description }}</p>
+
+            {% if "username" in session %}
+                <a href="/books/{{ book.id }}/{{ session['user_id'] }}" class="btn btn-warning">Заказать</a>
+            {% else %}
+                <a href="/login" class="btn btn-warning stretched-link" role="button" aria-disabled="true">Войдите</a>
+            {% endif %}
+        </div>
     </div>
-</div>
-<h3>Рецензии на книгу</h3>
-{% for review in reviews_list %}
-<p>{{ review }}</p>
-<hr>
-{% endfor %}
+    <h3 align="center">Рецензии на книгу</h3>
+    {% for review in reviews_list %}
+        <p>{{ review }}</p>
+        <hr>
+    {% endfor %}
 {% endblock %}
