@@ -1,7 +1,18 @@
 from main import db
 
 
+# Associative table for creating relationships inter reader and book
+class Associative(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+    book = db.relationship("Book", backref=db.backref("Associatives", lazy=True))
+    reader_id = db.Column(db.Integer, db.ForeignKey('readers.id'))
+    reader = db.relationship("Reader", backref=db.backref("Associatives", lazy=True))
+
+
+# Reader table
 class Reader(db.Model):
+    __tablename__ = 'readers'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     name = db.Column(db.String(80), unique=False, nullable=False)
@@ -17,7 +28,9 @@ class Reader(db.Model):
             self.id, self.username, self.name, self.surname)
 
 
+# Book table
 class Book(db.Model):
+    __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     author = db.Column(db.String(80), unique=False, nullable=False)
@@ -31,37 +44,24 @@ class Book(db.Model):
             self.id, self.name, self.author, self.count_book_in_lib)
 
 
-class PrimaryBook(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    book_id = db.Column(db.Integer,
-                        db.ForeignKey('book.id'),
-                        nullable=False)
-    book = db.relationship('Book',
-                           backref=db.backref('PrimaryBooks',
-                                              lazy=True))
-    reader_id = db.Column(db.Integer,
-                          db.ForeignKey('reader.id'),
-                          nullable=True)
-    reader = db.relationship('Reader',
-                             backref=db.backref('PrimaryBooks',
-                                                lazy=True))
-
-    def __repr__(self):
-        return '<PrimaryBooks {}>'.format(self.id)
-
-
+# Review table
 class Review(db.Model):
+    __tablename__ = 'reviews'
     id = db.Column(db.Integer, primary_key=True)
     header = db.Column(db.String(80), unique=False, nullable=False)
     text = db.Column(db.String(500), unique=False, nullable=False)
+
+    # Create relationship inter review and reader
     reader_id = db.Column(db.Integer,
-                          db.ForeignKey('reader.id'),
+                          db.ForeignKey('readers.id'),
                           nullable=False)
     reader = db.relationship('Reader',
                              backref=db.backref('Reviews',
                                                 lazy=True))
+
+    # Create relationship inter review and book
     book_id = db.Column(db.Integer,
-                        db.ForeignKey('book.id'),
+                        db.ForeignKey('books.id'),
                         nullable=False)
     book = db.relationship('Book',
                            backref=db.backref('Reviews',
