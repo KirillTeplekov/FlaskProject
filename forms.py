@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileF
 from wtforms.validators import DataRequired
 
 
+# Form for sig-in page
 class LoginForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
@@ -10,6 +11,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
+# Form for registration page
 class RegistrationForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
     name = StringField('Имя', validators=[DataRequired()])
@@ -17,10 +19,11 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     town = StringField('Город(не обязательно к заполнению)')
-    image = FileField('Загрузите изображение', validators=[DataRequired()])
+    image = FileField('Загрузите изображение(только .png)', validators=[DataRequired()])
     submit = SubmitField('Зарегистрироваться')
 
 
+# Form for add_book page
 class AddBook(FlaskForm):
     name = StringField('Название', validators=[DataRequired()])
     author = StringField('Автор', validators=[DataRequired()])
